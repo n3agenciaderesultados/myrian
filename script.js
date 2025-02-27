@@ -24,6 +24,11 @@ async function carregarDadosSelect(campo, aba, coluna) {
       throw new Error(`Erro ao acessar a planilha: ${response.status} ${response.statusText}`);
     }
 
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error('A resposta não é um JSON válido.');
+    }
+
     const data = await response.json();
     console.log(`Dados recebidos para o campo ${campo}:`, data);
 
