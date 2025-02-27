@@ -35,6 +35,8 @@ input[type="text"],
 select,
 textarea {
   width: 100%;
+  max-width: 600px; /* Largura fixa */
+  height: 40px; /* Altura fixa */
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -44,10 +46,13 @@ textarea {
 
 textarea {
   resize: vertical;
+  height: 100px; /* Altura maior para campos de texto longos */
 }
 
 button {
   width: 100%;
+  max-width: 600px; /* Largura fixa */
+  height: 40px; /* Altura fixa */
   padding: 10px;
   background-color: #4CAF50;
   color: white;
