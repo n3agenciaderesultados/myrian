@@ -17,16 +17,30 @@ async function carregarDadosSelect(campo, aba, coluna) {
   const url = `${GOOGLE_SHEETS_URL}sheet=${aba}&tq=${encodeURIComponent(query)}`;
 
   try {
+    console.log(`Carregando dados para o campo ${campo} da aba ${aba}, coluna ${coluna}`);
     const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Erro ao acessar a planilha: ${response.status} ${response.statusText}`);
+    }
+
     const data = await response.json();
-    const rows = data.table.rows;
+    console.log(`Dados recebidos para o campo ${campo}:`, data);
+
+    const rows = data.table?.rows || [];
+    if (rows.length === 0) {
+      console.warn(`Nenhum dado encontrado para o campo ${campo} na aba ${aba}, coluna ${coluna}`);
+      return;
+    }
 
     const select = document.getElementById(campo);
     rows.forEach(row => {
-      const option = document.createElement('option');
-      option.value = row.c[0].v;
-      option.textContent = row.c[0].v;
-      select.appendChild(option);
+      if (row.c && row.c[0] && row.c[0].v) {
+        const option = document.createElement('option');
+        option.value = row.c[0].v;
+        option.textContent = row.c[0].v;
+        select.appendChild(option);
+      }
     });
   } catch (error) {
     console.error(`Erro ao carregar dados para o campo ${campo}:`, error);
@@ -44,43 +58,4 @@ document.addEventListener('DOMContentLoaded', () => {
   carregarDadosSelect('demanda', 'Painel de Cadastros', 'F');
   carregarDadosSelect('estudante', 'Painel de Cadastros', 'G');
   carregarDadosSelect('status', 'Painel de Cadastros', 'H');
-});
-
-// Salva os dados no SheetDB
-document.getElementById('atendimentoForm').addEventListener('submit', async (event) => {
-  event.preventDefault();
-
-  const formData = {
-    dataAtendimento: document.getElementById('dataAtendimento').value,
-    escola: document.getElementById('escola').value,
-    gestor: document.getElementById('gestor').value,
-    profissional: document.getElementById('profissional').value,
-    especialidade: document.getElementById('especialidade').value,
-    demanda: document.getElementById('demanda').value,
-    estudante: document.getElementById('estudante').value,
-    status: document.getElementById('status').value,
-    situacao: document.getElementById('situacao').value,
-    observacao: document.getElementById('observacao').value
-  };
-
-  try {
-    const response = await fetch(SHEETDB_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ data: [formData] })
-    });
-
-    if (response.ok) {
-      alert('Atendimento salvo com sucesso!');
-      document.getElementById('atendimentoForm').reset();
-      document.getElementById('dataAtendimento').value = getDataAtual();
-    } else {
-      alert('Erro ao salvar o atendimento.');
-    }
-  } catch (error) {
-    console.error('Erro ao enviar dados:', error);
-    alert('Erro ao salvar o atendimento.');
-  }
 });
