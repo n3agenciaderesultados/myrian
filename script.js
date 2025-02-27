@@ -62,6 +62,15 @@ function preencherSelect(selectId, dados) {
   });
 }
 
+// Filtra os itens de um campo de seleção com base no valor digitado
+function filtrarSelect(selectId, filtro) {
+  const select = document.getElementById(selectId);
+  Array.from(select.options).forEach(option => {
+    const isVisible = option.textContent.toLowerCase().includes(filtro.toLowerCase());
+    option.style.display = isVisible ? '' : 'none';
+  });
+}
+
 // Preenche o campo de estudante com dados da planilha
 async function carregarEstudantes() {
   const query = `SELECT G WHERE G IS NOT NULL`;
@@ -121,7 +130,6 @@ document.getElementById('atendimentoForm').addEventListener('submit', async (eve
   event.preventDefault();
 
   const formData = {
-    numeroAtendimento: document.getElementById('numeroAtendimento').value || 'Auto',
     dataAtendimento: document.getElementById('dataAtendimento').value,
     escola: document.getElementById('escola').value,
     gestor: document.getElementById('gestor').value,
