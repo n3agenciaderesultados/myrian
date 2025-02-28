@@ -1,5 +1,6 @@
-// URL da SheetDB para carregar e salvar dados
-const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/rr2wjjs799zb1'; // Substitua pelo seu ID do SheetDB
+// URLs das APIs do SheetDB
+const SHEETDB_SAVE_API_URL = 'https://sheetdb.io/api/v1/rr2wjjs799zb1'; // API para salvar dados
+const SHEETDB_LOAD_ALUNOS_API_URL = 'https://sheetdb.io/api/v1/y2ahfh43e7wwg'; // API para carregar alunos
 
 // Função para formatar a data no formato brasileiro (DD/MM/AAAA)
 function getDataAtual() {
@@ -65,7 +66,7 @@ function preencherSelect(selectId, dados) {
 async function carregarEstudantes() {
   try {
     console.log(`Carregando dados para o campo estudante`);
-    const response = await fetch('https://sheetdb.io/api/v1/y2ahfh43e7wwg');
+    const response = await fetch(SHEETDB_LOAD_ALUNOS_API_URL);
 
     if (!response.ok) {
       throw new Error(`Erro ao acessar a SheetDB: ${response.status} ${response.statusText}`);
@@ -76,10 +77,10 @@ async function carregarEstudantes() {
 
     const select = document.getElementById('estudante');
     data.forEach(row => {
-      if (row.estudante) {
+      if (row.nome) { // Supondo que o nome do aluno está na coluna "nome"
         const option = document.createElement('option');
-        option.value = row.estudante;
-        option.textContent = row.estudante;
+        option.value = row.nome;
+        option.textContent = row.nome;
         select.appendChild(option);
       }
     });
@@ -120,7 +121,7 @@ document.getElementById('atendimentoForm').addEventListener('submit', async (eve
   };
 
   try {
-    const response = await fetch(SHEETDB_API_URL, {
+    const response = await fetch(SHEETDB_SAVE_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
