@@ -10,6 +10,12 @@
   <div class="form-container">
     <h1>Formulário de Atendimento</h1>
     <form id="atendimentoForm">
+      <!-- Nº DO ATENDIMENTO -->
+      <div class="form-group">
+        <label for="numeroAtendimento">Nº DO ATENDIMENTO:</label>
+        <input type="text" id="numeroAtendimento" name="numeroAtendimento" readonly placeholder="Gerado automaticamente">
+      </div>
+
       <!-- DATA DE ATENDIMENTO -->
       <div class="form-group">
         <label for="dataAtendimento">DATA DE ATENDIMENTO:</label>
@@ -19,49 +25,42 @@
       <!-- ESCOLA -->
       <div class="form-group">
         <label for="escola">ESCOLA:</label>
-        <input type="text" id="escolaInput" placeholder="Digite para filtrar..." oninput="filtrarSelect('escola', this.value)">
         <select id="escola" name="escola" required></select>
       </div>
 
       <!-- GESTOR -->
       <div class="form-group">
         <label for="gestor">GESTOR:</label>
-        <input type="text" id="gestorInput" placeholder="Digite para filtrar..." oninput="filtrarSelect('gestor', this.value)">
         <select id="gestor" name="gestor" required></select>
       </div>
 
       <!-- PROFISSIONAL -->
       <div class="form-group">
         <label for="profissional">PROFISSIONAL:</label>
-        <input type="text" id="profissionalInput" placeholder="Digite para filtrar..." oninput="filtrarSelect('profissional', this.value)">
         <select id="profissional" name="profissional" required></select>
       </div>
 
       <!-- ESPECIALIDADE -->
       <div class="form-group">
         <label for="especialidade">ESPECIALIDADE:</label>
-        <input type="text" id="especialidadeInput" placeholder="Digite para filtrar..." oninput="filtrarSelect('especialidade', this.value)">
         <select id="especialidade" name="especialidade" required></select>
       </div>
 
       <!-- DEMANDA -->
       <div class="form-group">
         <label for="demanda">DEMANDA:</label>
-        <input type="text" id="demandaInput" placeholder="Digite para filtrar..." oninput="filtrarSelect('demanda', this.value)">
         <select id="demanda" name="demanda" required></select>
       </div>
 
       <!-- ESTUDANTE -->
       <div class="form-group">
         <label for="estudante">ESTUDANTE:</label>
-        <input type="text" id="estudanteInput" placeholder="Digite para filtrar..." oninput="filtrarSelect('estudante', this.value)">
         <select id="estudante" name="estudante" required></select>
       </div>
 
       <!-- STATUS -->
       <div class="form-group">
         <label for="status">STATUS:</label>
-        <input type="text" id="statusInput" placeholder="Digite para filtrar..." oninput="filtrarSelect('status', this.value)">
         <select id="status" name="status" required></select>
       </div>
 
