@@ -58,12 +58,9 @@
 
       <!-- ESTUDANTE -->
       <div class="form-group">
-        <label for="estudante">ESTUDANTE:</label>
-        <select id="estudante" name="estudante" required>
-          <option value="">Selecione...</option>
-        </select>
+      <label for="estudante">ESTUDANTE:</label>
+      <input type="text" id="estudante" name="estudante" oninput="this.value = this.value.toUpperCase()" required>
       </div>
-
       <!-- STATUS -->
       <div class="form-group">
         <label for="status">STATUS:</label>
