@@ -1,6 +1,5 @@
 // URLs das APIs do SheetDB
 const SHEETDB_SAVE_API_URL = 'https://sheetdb.io/api/v1/rr2wjjs799zb1'; // API para salvar dados
-const SHEETDB_LOAD_ALUNOS_API_URL = 'https://sheetdb.io/api/v1/y2ahfh43e7wwg'; // API para carregar alunos
 
 // Função para formatar a data no formato brasileiro (DD/MM/AAAA)
 function getDataAtual() {
@@ -62,33 +61,6 @@ function preencherSelect(selectId, dados) {
   });
 }
 
-// Carrega os estudantes da SheetDB
-async function carregarEstudantes() {
-  try {
-    console.log(`Carregando dados para o campo estudante`);
-    const response = await fetch(SHEETDB_LOAD_ALUNOS_API_URL);
-
-    if (!response.ok) {
-      throw new Error(`Erro ao acessar a SheetDB: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    console.log(`Dados recebidos para o campo estudante:`, data);
-
-    const select = document.getElementById('estudante');
-    data.forEach(row => {
-      if (row.nome) { // Supondo que o nome do aluno está na coluna "nome"
-        const option = document.createElement('option');
-        option.value = row.nome;
-        option.textContent = row.nome;
-        select.appendChild(option);
-      }
-    });
-  } catch (error) {
-    console.error(`Erro ao carregar dados para o campo estudante:`, error);
-  }
-}
-
 // Carrega todos os campos
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('dataAtendimento').value = getDataAtual();
@@ -99,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
   preencherSelect('especialidade', especialidades);
   preencherSelect('demanda', demandas);
   preencherSelect('status', statusList);
-  carregarEstudantes();
 });
 
 // Salva os dados no SheetDB
@@ -113,7 +84,7 @@ document.getElementById('atendimentoForm').addEventListener('submit', async (eve
     profissional: document.getElementById('profissional').value,
     especialidade: document.getElementById('especialidade').value,
     demanda: document.getElementById('demanda').value,
-    estudante: document.getElementById('estudante').value,
+    estudante: document.getElementById('estudante').value.toUpperCase(), // Garante que o nome esteja em maiúsculo
     status: document.getElementById('status').value,
     situacao: document.getElementById('situacao').value,
     observacao: document.getElementById('observacao').value
