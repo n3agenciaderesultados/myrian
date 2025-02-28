@@ -107,7 +107,6 @@ document.getElementById('atendimentoForm').addEventListener('submit', async (eve
   event.preventDefault();
 
   const formData = {
-    numeroAtendimento: document.getElementById('numeroAtendimento').value || 'Auto',
     dataAtendimento: document.getElementById('dataAtendimento').value,
     escola: document.getElementById('escola').value,
     gestor: document.getElementById('gestor').value,
