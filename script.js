@@ -71,47 +71,6 @@ function filtrarSelect(selectId, filtro) {
   });
 }
 
-// Preenche o campo de estudante com dados da planilha
-async function carregarEstudantes() {
-  const query = `SELECT G WHERE G IS NOT NULL`;
-  const url = `${GOOGLE_SHEETS_URL}sheet=ALUNOS&tq=${encodeURIComponent(query)}`;
-
-  try {
-    console.log(`Carregando dados para o campo estudante`);
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error(`Erro ao acessar a planilha: ${response.status} ${response.statusText}`);
-    }
-
-    const contentType = response.headers.get('content-type');
-    if (!contentType || !contentType.includes('application/json')) {
-      throw new Error('A resposta não é um JSON válido.');
-    }
-
-    const data = await response.json();
-    console.log(`Dados recebidos para o campo estudante:`, data);
-
-    const rows = data.table?.rows || [];
-    if (rows.length === 0) {
-      console.warn(`Nenhum dado encontrado para o campo estudante`);
-      return;
-    }
-
-    const select = document.getElementById('estudante');
-    rows.forEach(row => {
-      if (row.c && row.c[0] && row.c[0].v) {
-        const option = document.createElement('option');
-        option.value = row.c[0].v;
-        option.textContent = row.c[0].v;
-        select.appendChild(option);
-      }
-    });
-  } catch (error) {
-    console.error(`Erro ao carregar dados para o campo estudante:`, error);
-  }
-}
-
 // Carrega todos os campos
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('dataAtendimento').value = getDataAtual();
@@ -122,7 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
   preencherSelect('especialidade', especialidades);
   preencherSelect('demanda', demandas);
   preencherSelect('status', statusList);
-  carregarEstudantes();
+
+  // Carregar estudantes dinamicamente (se necessário)
 });
 
 // Salva os dados no SheetDB
