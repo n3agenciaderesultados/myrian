@@ -1,6 +1,5 @@
-// URL da planilha do Google Sheets
-const GOOGLE_SHEETS_URL = 'https://docs.google.com/spreadsheets/d/13XHWs0ZTqup5b9nTjfUmYQYb6WwXBwdLNmw1qpshXik/gviz/tq?';
-const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/YOUR_SHEETDB_ID'; // Substitua pelo seu ID do SheetDB
+// URL da SheetDB para carregar e salvar dados
+const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/rr2wjjs799zb1'; // Substitua pelo seu ID do SheetDB
 
 // Função para formatar a data no formato brasileiro (DD/MM/AAAA)
 function getDataAtual() {
@@ -62,13 +61,31 @@ function preencherSelect(selectId, dados) {
   });
 }
 
-// Filtra os itens de um campo de seleção com base no valor digitado
-function filtrarSelect(selectId, filtro) {
-  const select = document.getElementById(selectId);
-  Array.from(select.options).forEach(option => {
-    const isVisible = option.textContent.toLowerCase().includes(filtro.toLowerCase());
-    option.style.display = isVisible ? '' : 'none';
-  });
+// Carrega os estudantes da SheetDB
+async function carregarEstudantes() {
+  try {
+    console.log(`Carregando dados para o campo estudante`);
+    const response = await fetch(https://sheetdb.io/api/v1/y2ahfh43e7wwg);
+
+    if (!response.ok) {
+      throw new Error(`Erro ao acessar a SheetDB: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log(`Dados recebidos para o campo estudante:`, data);
+
+    const select = document.getElementById('estudante');
+    data.forEach(row => {
+      if (row.estudante) {
+        const option = document.createElement('option');
+        option.value = row.estudante;
+        option.textContent = row.estudante;
+        select.appendChild(option);
+      }
+    });
+  } catch (error) {
+    console.error(`Erro ao carregar dados para o campo estudante:`, error);
+  }
 }
 
 // Carrega todos os campos
@@ -81,8 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
   preencherSelect('especialidade', especialidades);
   preencherSelect('demanda', demandas);
   preencherSelect('status', statusList);
-
-  // Carregar estudantes dinamicamente (se necessário)
+  carregarEstudantes();
 });
 
 // Salva os dados no SheetDB
@@ -90,6 +106,7 @@ document.getElementById('atendimentoForm').addEventListener('submit', async (eve
   event.preventDefault();
 
   const formData = {
+    numeroAtendimento: document.getElementById('numeroAtendimento').value || 'Auto',
     dataAtendimento: document.getElementById('dataAtendimento').value,
     escola: document.getElementById('escola').value,
     gestor: document.getElementById('gestor').value,
