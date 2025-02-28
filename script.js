@@ -65,7 +65,7 @@ function preencherSelect(selectId, dados) {
 async function carregarEstudantes() {
   try {
     console.log(`Carregando dados para o campo estudante`);
-    const response = await fetch(https://sheetdb.io/api/v1/y2ahfh43e7wwg);
+    const response = await fetch('https://sheetdb.io/api/v1/y2ahfh43e7wwg');
 
     if (!response.ok) {
       throw new Error(`Erro ao acessar a SheetDB: ${response.status} ${response.statusText}`);
