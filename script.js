@@ -1,5 +1,5 @@
-// URLs das APIs do SheetDB
-const SHEETDB_SAVE_API_URL = 'https://sheetdb.io/api/v1/rr2wjjs799zb1'; // API para salvar dados
+// URL da API do SheetDB
+const SHEETDB_SAVE_API_URL = 'https://sheetdb.io/api/v1/rr2wjjs799zb1'; // Substitua pelo seu ID do SheetDB
 
 // Função para formatar a data no formato brasileiro (DD/MM/AAAA)
 function getDataAtual() {
@@ -77,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('atendimentoForm').addEventListener('submit', async (event) => {
   event.preventDefault();
 
+  // Coleta os dados do formulário
   const formData = {
     dataAtendimento: document.getElementById('dataAtendimento').value,
     escola: document.getElementById('escola').value,
@@ -90,22 +91,27 @@ document.getElementById('atendimentoForm').addEventListener('submit', async (eve
     observacao: document.getElementById('observacao').value
   };
 
+  console.log("Dados a serem enviados:", { data: [formData] }); // Log dos dados
+
   try {
     const response = await fetch(SHEETDB_SAVE_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ data: [formData] })
+      body: JSON.stringify({ data: [formData] }) // Envio dos dados
     });
 
-    if (response.ok) {
-      alert('Atendimento salvo com sucesso!');
-      document.getElementById('atendimentoForm').reset();
-      document.getElementById('dataAtendimento').value = getDataAtual();
-    } else {
-      alert('Erro ao salvar o atendimento.');
+    if (!response.ok) {
+      const errorDetails = await response.text(); // Captura detalhes do erro
+      console.error("Erro na resposta da API:", errorDetails);
+      alert(`Erro ao salvar o atendimento. Detalhes: ${errorDetails}`);
+      return;
     }
+
+    alert('Atendimento salvo com sucesso!');
+    document.getElementById('atendimentoForm').reset();
+    document.getElementById('dataAtendimento').value = getDataAtual();
   } catch (error) {
     console.error('Erro ao enviar dados:', error);
     alert('Erro ao salvar o atendimento.');
